@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonderdocs - Le mouvement comme remède</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" defer></script>
+</head>
+<body>
+
+    <!-- EN-TÊTE -->
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <a href="#" class="logo-img-link" aria-label="Wonderkine - Accueil">
+                    <svg class="site-logo-img" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="beeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--primary-light)"/>
+                                <stop offset="100%" stop-color="var(--primary)"/>
+                            </linearGradient>
+                        </defs>
+                        <g fill="none" stroke="url(#beeGradient)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="32" cy="18" r="1.2" fill="url(#beeGradient)" stroke="none"/>
+                            <path d="M27 12 C26 8 24 7 22 7" />
+                            <path d="M37 12 C38 8 40 7 42 7" />
+                            <circle cx="32" cy="19" r="5.5" fill="url(#beeGradient)" stroke="none"/>
+                            <path d="M22 26 L11 20 C9 25 12 30 20 31 Z" />
+                            <path d="M42 26 L53 20 C55 25 52 30 44 31 Z" />
+                            <path d="M25 25 L20 44 C20 51 26 55 32 57 C38 55 44 51 44 44 L39 25 Z" fill="rgba(15,118,110,0.08)"/>
+                            <path d="M22 34 H42 M23 40 H41 M25 46 H39" stroke-width="2.2"/>
+                            <path d="M28 27 V21 M25 24 H31" stroke-width="2.6"/>
+                        </g>
+                    </svg>
+                </a>
+                <div class="site-branding">
+                    <span class="site-name">Wonderkine</span>
+                    <span class="site-slogan">Le mouvement comme remède</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button class="btn" id="btn-about" onclick="openAboutModal()" style="background: rgba(255,255,255,0.6); border: 1px solid var(--ice-border); padding: 0.6rem 1.2rem; font-size: 0.9rem;">Qui sommes-nous ?</button>
+                <a href="admin.html" id="btn-admin" class="btn" style="display:none; background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: white; padding: 0.6rem 1.2rem; font-size: 0.9rem;">⚙️ Administration</a>
+                <div class="user-status" id="status-badge">Mode Invité</div>
+                <button class="btn btn-danger" id="btn-logout" onclick="handleLogout()" style="display:none; padding: 0.6rem 1rem; font-size: 0.85rem;">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION HERO & RECHERCHE -->
+    <section class="hero">
+        <h1>Base de données Wonderdocs</h1>
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-bar" placeholder="Rechercher un article, un document, une pathologie...">
+        </div>
+    </section>
+
+    <!-- SÉLECTEUR DE SECTION PRINCIPALE (Articles vs Documents) -->
+    <div class="main-mode-tabs">
+        <button class="btn btn-primary" id="btn-tab-articles" onclick="switchMainTab('articles')">Articles</button>
+        <button class="btn" id="btn-tab-docs" onclick="switchMainTab('documents')" style="background: rgba(255,255,255,0.6); border: 1px solid var(--ice-border);">Documents & Cours</button>
+    </div>
+
+    <!-- ONGLETS DE FILTRAGE PAR THÈME -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" data-category="all" onclick="filterCategory('all')">Tous</button>
+        <button class="tab-btn" data-category="anatomie" onclick="filterCategory('anatomie')">Anatomie</button>
+        <button class="tab-btn" data-category="pathologies" onclick="filterCategory('pathologies')">Pathologies</button>
+        <button class="tab-btn" data-category="physiologie" onclick="filterCategory('physiologie')">Physiologie</button>
+        <button class="tab-btn" data-category="techniques" onclick="filterCategory('techniques')">Techniques</button>
+    </div>
+
+    <!-- CONTENU -->
+    <main>
+        <h2 class="section-title" id="display-title">Articles publiés</h2>
+
+        <div class="results-toolbar">
+            <p id="results-count"></p>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.9rem; color:var(--text-light);">
+                Trier par :
+                <select id="sort-select" class="register-input" style="padding:0.5rem 1rem;">
+                    <option value="recent">Plus récents</option>
+                    <option value="title">Titre (A-Z)</option>
+                    <option value="views">Popularité</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="results-list" id="content-grid"></div>
+
+        <div class="pagination" id="pagination-controls"></div>
+
+        <!-- ZONE AJOUT D'ARTICLE (Réservée aux inscrits) -->
+        <div id="add-article-zone" class="register-section" style="display: none; margin-top: 3rem;">
+            <h2 style="color: var(--primary);" id="form-section-title">Publier un nouvel article</h2>
+            
+            <!-- Sélecteur pour choisir quoi publier -->
+            <div style="margin-bottom: 1.5rem;">
+                <label style="font-weight: 600; color: var(--text-dark); margin-right: 1rem;">Type de publication :</label>
+                <select id="pub-type-selector" class="register-input" onchange="togglePubFormType()" style="display: inline-block; width: auto;">
+                    <option value="article">Article (avec image)</option>
+                    <option value="document">Document / Cours (PDF, Mémoire...)</option>
+                </select>
+            </div>
+
+            <form class="register-form" id="main-pub-form" onsubmit="handlePublish(event)" style="flex-direction: column; align-items: stretch;">
+                <input type="text" class="register-input" id="pub-title" placeholder="Titre" required style="width: 100%; margin-bottom: 1rem;">
+                
+                <select id="pub-cat" class="register-input" style="width: 100%; margin-bottom: 1rem;" required>
+                    <option value="" disabled selected>Choisir une catégorie (Anatomie, Pathologies, etc.)</option>
+                    <option value="anatomie">Anatomie</option>
+                    <option value="pathologies">Pathologies</option>
+                    <option value="physiologie">Physiologie</option>
+                    <option value="techniques">Techniques</option>
+                </select>
+
+                <!-- Mots-clés obligatoires -->
+                <input type="text" class="register-input" id="pub-keywords" placeholder="Mots-clés obligatoires (ex: kinésithérapie, genou, rééducation...)" required style="width: 100%; margin-bottom: 1rem;">
+
+                <label style="text-align: left; font-size: 0.85rem; color: var(--text-light); display: block; margin-bottom: 0.3rem;">Contenu :</label>
+                <div id="pub-desc-toolbar">
+                    <span class="ql-formats">
+                        <button class="mini-tool-btn" type="button" title="Annuler" onclick="editorUndo()">↶</button>
+                        <button class="mini-tool-btn" type="button" title="Rétablir" onclick="editorRedo()">↷</button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-font"></select>
+                        <select class="ql-size"></select>
+                        <select class="ql-header">
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option selected></option>
+                        </select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-align"></select>
+                        <button class="ql-indent" value="-1"></button>
+                        <button class="ql-indent" value="+1"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-blockquote"></button>
+                        <button class="ql-code-block"></button>
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                        <button class="ql-image"></button>
+                        <button class="ql-clean"></button>
+                    </span>
+                </div>
+                <div id="pub-desc-editor"></div>
+                <button type="button" class="btn" onclick="openLinkPicker()" style="margin: 0.6rem 0 1rem 0; font-size: 0.85rem; background: rgba(255,255,255,0.6); border: 1px solid var(--ice-border); align-self: flex-start;">🔗 Lier vers un article ou document existant</button>
+                
+                <!-- Champ dynamique : Image pour Article / Fichier & Pages pour Document -->
+                <div id="dynamic-file-fields">
+                    <label style="text-align: left; font-size: 0.9rem; color: var(--text-light); display: block; margin-bottom: 0.3rem;">Image d'illustration de l'article :</label>
+                    <input type="file" id="pub-image" accept="image/*" class="register-input" style="width: 100%; margin-bottom: 1rem; background: rgba(255,255,255,0.8);">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submit-pub-btn">Publier l'article</button>
+            </form>
+        </div>
+
+        <!-- ZONE INSCRIT / CONNEXION -->
+        <section class="register-section" id="auth-section">
+            <h2 style="color: var(--primary);">Espace Membre Wonderdocs</h2>
+            <p style="color: var(--text-light); margin-top: 0.5rem;">Connectez-vous ou créez un compte (Nom d'utilisateur, Email, Mot de passe) pour publier, télécharger et lire l'intégralité des documents.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="openAuthModal('login')">Se connecter</button>
+                <button class="btn" style="background: rgba(255,255,255,0.6); border: 1px solid var(--ice-border);" onclick="openAuthModal('signup')">S'inscrire</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL AUTHENTIFICATION -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title" style="color: var(--primary); margin-bottom: 1.5rem;">Connexion</h2>
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="text" id="auth-username" class="register-input" placeholder="Nom d'utilisateur" required style="width: 100%; display: none;">
+                <input type="email" id="auth-email" class="register-input" placeholder="Adresse email" required style="width: 100%;">
+                <input type="password" id="auth-password" class="register-input" placeholder="Mot de passe (6 caractères minimum)" required minlength="6" style="width: 100%;">
+                <button type="submit" class="btn btn-primary" id="auth-submit-btn">Valider</button>
+                <p id="auth-error" style="color: #dc2626; font-size: 0.85rem; display: none;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL QUI SOMMES-NOUS -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content" style="max-width: 560px; text-align: left;">
+            <span class="close-modal" onclick="closeAboutModal()">&times;</span>
+            <div style="display:flex; align-items:center; gap:0.9rem; margin-bottom: 1.2rem;">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="width:44px; height:44px; flex-shrink:0;" aria-hidden="true">
+                    <g fill="none" stroke="var(--primary)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="32" cy="19" r="5.5" fill="var(--primary)" stroke="none"/>
+                        <path d="M22 26 L11 20 C9 25 12 30 20 31 Z" />
+                        <path d="M42 26 L53 20 C55 25 52 30 44 31 Z" />
+                        <path d="M25 25 L20 44 C20 51 26 55 32 57 C38 55 44 51 44 44 L39 25 Z" fill="rgba(15,118,110,0.08)"/>
+                        <path d="M22 34 H42 M23 40 H41 M25 46 H39" stroke-width="2.2"/>
+                    </g>
+                </svg>
+                <h2 style="color: var(--primary);">Qui sommes-nous ?</h2>
+            </div>
+            <p style="margin-bottom: 1rem; color: var(--text-dark);">
+                Wonderkine est né de la passion d'<strong>Eli'Ze</strong>, jeune étudiant en fin de cycle de kinésithérapie à l'Université des Sciences de la Santé d'Owendo, au Gabon, membre de la promotion <strong>Épistasie</strong>.
+            </p>
+            <p style="margin-bottom: 1rem; color: var(--text-dark);">
+                Passionné de rééducation et animé par l'envie de transmettre ses connaissances, il a conçu ce site comme une plateforme d'échange et de partage ouverte à toute personne curieuse de kinésithérapie : étudiants, professionnels et passionnés du mouvement.
+            </p>
+            <p style="color: var(--text-light); font-style: italic;">
+                Une conviction guide chaque article et chaque document partagé ici : le mouvement comme remède.
+            </p>
+        </div>
+    </div>
+
+    <!-- MODAL LIER VERS UN CONTENU EXISTANT -->
+    <div class="modal" id="link-picker-modal">
+        <div class="modal-content" style="text-align: left; max-width: 480px;">
+            <span class="close-modal" onclick="closeLinkPicker()">&times;</span>
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">Lier vers un contenu existant</h3>
+            <input type="text" id="link-picker-search" class="register-input" placeholder="Rechercher un article ou document..." style="width: 100%; margin-bottom: 1rem;">
+            <div id="link-picker-list" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;"></div>
+        </div>
+    </div>
+
+    <!-- MODAL LECTURE D'UN ARTICLE / DOCUMENT -->
+    <div class="modal" id="read-modal">
+        <div class="modal-content read-modal-content">
+            <span class="close-modal" onclick="closeReadModal()">&times;</span>
+            <h2 id="read-modal-title" style="color: var(--primary); margin-bottom: 1.2rem;"></h2>
+            <div id="read-modal-body" class="rich-content ql-editor"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Fait par un étudiant passionné.</p>
+        <p style="margin-top: 0.25rem;"><strong>Wonder / Epistasie</strong> &copy; 2026</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration — Wonderkine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+        .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+        .admin-header h1 { color: var(--primary); font-size: 1.8rem; }
+        .back-link { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+        .stat-card { background: var(--white); backdrop-filter: var(--blur); border: 1px solid var(--ice-border); border-radius: 16px; padding: 1.2rem; text-align: center; box-shadow: var(--shadow); }
+        .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+        .stat-card .label { font-size: 0.8rem; color: var(--text-light); margin-top: 0.2rem; }
+        .admin-section { background: var(--white); backdrop-filter: var(--blur); border: 1px solid var(--ice-border); border-radius: 20px; padding: 1.8rem; box-shadow: var(--shadow); margin-bottom: 2rem; }
+        .admin-section h2 { color: var(--primary); font-size: 1.2rem; margin-bottom: 1rem; }
+        table.admin-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        table.admin-table th, table.admin-table td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid rgba(15,118,110,0.12); vertical-align: middle; }
+        table.admin-table th { color: var(--text-light); font-weight: 700; text-transform: uppercase; font-size: 0.72rem; }
+        .role-pill { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+        .role-admin { background: rgba(15,118,110,0.15); color: var(--primary); }
+        .role-membre { background: rgba(100,116,139,0.15); color: var(--text-light); }
+        .mini-btn { padding: 0.4rem 0.8rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.78rem; font-weight: 600; }
+        .empty-note { color: var(--text-light); font-size: 0.9rem; text-align: center; padding: 1rem 0; }
+        #access-denied { max-width: 500px; margin: 6rem auto; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="site-name">Wonderkine</span>
+                <span class="site-slogan">Espace d'administration</span>
+            </div>
+            <a href="index.html" class="btn" style="background: rgba(255,255,255,0.6); border: 1px solid var(--ice-border);">← Retour au site</a>
+        </div>
+    </header>
+
+    <!-- ACCÈS REFUSÉ -->
+    <div id="access-denied" class="register-section" style="display:none;">
+        <h2 style="color: var(--primary);">Accès réservé</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">Cette page est réservée aux administrateurs de Wonderkine. Connectez-vous avec un compte administrateur, ou continuez à publier des articles et documents pour le devenir automatiquement.</p>
+        <a href="index.html" class="btn btn-primary" style="display:inline-block; margin-top:1.5rem;">Retour à l'accueil</a>
+    </div>
+
+    <!-- CHARGEMENT -->
+    <p id="admin-loading" class="empty-note" style="margin-top:4rem;">Vérification des droits d'accès...</p>
+
+    <!-- TABLEAU DE BORD -->
+    <div class="admin-wrap" id="admin-dashboard" style="display:none;">
+        <div class="admin-header">
+            <h1>⚙️ Tableau de bord</h1>
+        </div>
+
+        <div class="stats-row" id="stats-row"></div>
+
+        <div class="admin-section">
+            <h2>🚩 Signalements en attente</h2>
+            <div id="reports-list"></div>
+        </div>
+
+        <div class="admin-section">
+            <h2>👥 Utilisateurs</h2>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th><th>Email</th><th>Rôle</th><th>Articles</th><th>Documents</th><th>Thèmes</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>📚 Tout le contenu publié</h2>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Titre</th><th>Type</th><th>Catégorie</th><th>Auteur</th><th>Vues</th><th></th></tr>
+                    </thead>
+                    <tbody id="content-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
