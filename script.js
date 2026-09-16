@@ -24,7 +24,7 @@ const BUCKET = "uploads";
 // est automatiquement administrateur permanent — appliqué côté base de
 // données par un déclencheur (trigger), voir SETUP-SUPABASE.md. Renseigne
 // la même adresse ici pour l'affichage (badge couronne) côté interface.
-const CREATOR_EMAIL = "toncompte@example.com";
+const CREATOR_EMAIL = "kine33zwonder@gmail.com";
 
 // Polices proposées dans l'éditeur de texte enrichi
 const Font = Quill.import('formats/font');
@@ -108,6 +108,8 @@ const allowedMedicalKeywords = [
     'massage', 'etirement', 'étirement', 'psoas', 'genou', 'epaule', 'colonne', 'vertebre',
     'scoliose', 'algodystrophie', 'sdrc', 'biomecanique', 'biomécanique', 'posture', 'statique',
     'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage'
+    'innervation', 'système nerveux', 'innervation motrice', 'innervation sensitive',
+    'arthrose', 'mémoire', 'tendinite', 'arthrite','physiothérapie','vascularisation'
 ];
 
 /* ================================ ÉTAT =================================== */
