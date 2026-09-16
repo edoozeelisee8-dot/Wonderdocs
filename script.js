@@ -107,7 +107,7 @@ const allowedMedicalKeywords = [
     'douleur', 'fracture', 'entorse', 'geriatrie', 'gériatrie', 'neurologie', 'rhumatologie',
     'massage', 'etirement', 'étirement', 'renfocement', 'genou', 'epaule', 'colonne', 'vertebre',
     'scoliose', 'algodystrophie', 'sdrc', 'biomecanique', 'biomécanique', 'posture', 'statique',
-    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage',
+    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage','boiterie',
     'innervation', 'système nerveux', 'innervation motrice', 'innervation sensitive',
     'arthrose', 'mémoire', 'tendinite', 'arthrite','physiothérapie','vascularisation',
 ];
