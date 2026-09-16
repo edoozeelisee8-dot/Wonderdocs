@@ -105,11 +105,11 @@ const allowedMedicalKeywords = [
     'kine', 'kinesitherapie', 'kinésithérapie', 'anatomie', 'pathologie', 'physiologie',
     'muscle', 'os', 'articulation', 'tendon', 'ligament', 'reeducation', 'rééducation',
     'douleur', 'fracture', 'entorse', 'geriatrie', 'gériatrie', 'neurologie', 'rhumatologie',
-    'massage', 'etirement', 'étirement', 'psoas', 'genou', 'epaule', 'colonne', 'vertebre',
+    'massage', 'etirement', 'étirement', 'renfocement', 'genou', 'epaule', 'colonne', 'vertebre',
     'scoliose', 'algodystrophie', 'sdrc', 'biomecanique', 'biomécanique', 'posture', 'statique',
-    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage'
+    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage',
     'innervation', 'système nerveux', 'innervation motrice', 'innervation sensitive',
-    'arthrose', 'mémoire', 'tendinite', 'arthrite','physiothérapie','vascularisation'
+    'arthrose', 'mémoire', 'tendinite', 'arthrite','physiothérapie','vascularisation',
 ];
 
 /* ================================ ÉTAT =================================== */
