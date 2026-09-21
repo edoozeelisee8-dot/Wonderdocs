@@ -107,10 +107,14 @@ const allowedMedicalKeywords = [
     'douleur', 'fracture', 'entorse', 'geriatrie', 'gériatrie', 'neurologie', 'rhumatologie',
     'massage', 'etirement', 'étirement', 'renfocement', 'genou', 'epaule', 'colonne', 'vertebre',
     'scoliose', 'algodystrophie', 'sdrc', 'biomecanique', 'biomécanique', 'posture', 'statique',
-    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage','boiterie',
+    'bassin', 'membre', 'traitement', 'memoire', 'rapport', 'cours', 'stage','boiterie'
     'innervation', 'système nerveux', 'innervation motrice', 'innervation sensitive',
     'arthrose', 'mémoire', 'tendinite', 'arthrite','physiothérapie','vascularisation',
-];
+    'Goniomètre', 'goniometre', 'amplitude articulaire', 'bilan articulaire', 'bilan kinészithérapique',
+    'neurone', 'syndrome canalaire', 'imagérie', 'imagérie médicale', 'vision', 'vue','paralysie',
+    'gustation', 'olfaction', 'communication nerveuse', 'plexus brachial', 'physiologie renale',
+    'physiologie sanguine', 'physiologie musculaire', 'cruralgie', 'système nerveux', 'système nerveux autonome',
+    'système nerveux central', 'système nerveux périphérique', 'système nerveux sympathique', 'système nerveuxz parasympathique',
 
 /* ================================ ÉTAT =================================== */
 
